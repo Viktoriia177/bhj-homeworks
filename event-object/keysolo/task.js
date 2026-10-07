@@ -17,16 +17,24 @@ class Game {
   }
 
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода символа вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
-  }
+    document.addEventListener('keyup', (event) => {
+        // 1. Получаем DOM-элемент текущего символа и берем его текст
+        // Приводим к нижнему регистру, чтобы 'А' и 'а' считались одинаковыми
+        const expectedSymbol = this.currentSymbol.textContent.toLowerCase();
 
+        // 2. Получаем символ, который ввел пользователь
+        // Используем event.keyCode (числовой код клавиши) и String.fromCharCode()
+        // Это ровно то, что просят в подсказках. Тоже приводим к нижнему регистру.
+        const pressedSymbol = String.fromCharCode(event.keyCode).toLowerCase();
+
+        // 3. Сравниваем символы
+        if (expectedSymbol === pressedSymbol) {
+            this.success(); // Если совпало — победа
+        } else {
+            this.fail();    // Если нет — поражение
+        }
+    });
+}
   success() {
     if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
     this.currentSymbol.classList.add('symbol_correct');
